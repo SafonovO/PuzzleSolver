@@ -8,7 +8,7 @@ public class PuzzleBoard {
 	public final static int LEFT = 2;
 	public final static int RIGHT = 3;
 
-	public final static int SIZE = 4;
+	private int SIZE;
 
 	int board[][];
 
@@ -39,7 +39,7 @@ public class PuzzleBoard {
 	 */
 	public PuzzleBoard(String fileName) throws IOException, BadBoardException {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
-
+		this.SIZE = Integer.parseInt(br.readLine());
 		board = new int[SIZE][SIZE];
 		int c1, c2, s;
 		for (int i = 0; i < SIZE; i++) {
