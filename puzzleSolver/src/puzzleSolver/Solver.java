@@ -11,7 +11,7 @@ public class Solver {
 //			System.out.println(args[i]);
 //		}
         try {
-            PuzzleBoard tmp = new PuzzleBoard("board3.txt");
+            PuzzleBoard tmp = new PuzzleBoard(args[0]);
             System.out.println("hello world!");
         } catch (IOException e) {
             throw new RuntimeException(e);
