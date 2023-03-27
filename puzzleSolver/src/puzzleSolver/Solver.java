@@ -6,12 +6,13 @@ import java.lang.invoke.MethodHandles;
 
 public class Solver {
     public static void main(String[] args) {
-//		System.out.println("number of arguments: " + args.length);
-//		for (int i = 0; i < args.length; i++) {
-//			System.out.println(args[i]);
-//		}
+
+        String currentDir = System.getProperty("user.dir");
+        System.out.println(currentDir);
+        String fileName = args[0];
+        String filePath = currentDir.substring(0, currentDir.lastIndexOf(File.separator, currentDir.lastIndexOf(File.separator) - 1)) + File.separator + "data" + File.separator + fileName;
         try {
-            PuzzleBoard tmp = new PuzzleBoard(args[0]);
+           // PuzzleBoard tmp = new PuzzleBoard(args[0]);
             System.out.println("hello world!");
         } catch (IOException e) {
             throw new RuntimeException(e);
