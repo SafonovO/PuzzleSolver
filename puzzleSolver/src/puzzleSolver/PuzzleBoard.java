@@ -1,12 +1,16 @@
 package puzzleSolver;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.PriorityQueue;
 
 public class PuzzleBoard {
 	public final static int UP = 0;
 	public final static int DOWN = 1;
 	public final static int LEFT = 2;
 	public final static int RIGHT = 3;
+
 
 	private int SIZE;
 
@@ -86,49 +90,43 @@ public class PuzzleBoard {
 	 * 
 	 * @throws IllegalMoveException if the move is illegal
 	 */
-	public void makeMove(int tile, int direction) throws IllegalMoveException {
+	public void makeMove(int direction){
+		int tile = 0;
 		Pair p = findCoord(tile);
-		if (p == null)
-			throw new IllegalMoveException("tile " + tile + " not found");
+
 		int i = p.i;
 		int j = p.j;
 
 		// the tile is in position [i][j]
 		switch (direction) {
 		case UP: {
-			if (i > 0 && board[i - 1][j] == 0) {
+			if (i > 0) {
+				board[i][j] = board[i - 1][j];
 				board[i - 1][j] = tile;
-				board[i][j] = 0;
 				break;
-			} else
-				throw new IllegalMoveException("" + tile + "cannot move UP");
+			}
 		}
 		case DOWN: {
-			if (i < SIZE - 1 && board[i + 1][j] == 0) {
+			if (i < SIZE - 1) {
+				board[i][j] = board[i + 1][j];
 				board[i + 1][j] = tile;
-				board[i][j] = 0;
 				break;
-			} else
-				throw new IllegalMoveException("" + tile + "cannot move DOWN");
+			}
 		}
 		case RIGHT: {
-			if (j < SIZE - 1 && board[i][j + 1] == 0) {
+			if (j < SIZE - 1) {
+				board[i][j] = board[i][j + 1];
 				board[i][j + 1] = tile;
-				board[i][j] = 0;
 				break;
-			} else
-				throw new IllegalMoveException("" + tile + "cannot move LEFT");
+			}
 		}
 		case LEFT: {
-			if (j > 0 && board[i][j - 1] == 0) {
+			if (j > 0) {
+				board[i][j] = board[i][j - 1];
 				board[i][j - 1] = tile;
-				board[i][j] = 0;
 				break;
-			} else
-				throw new IllegalMoveException("" + tile + "cannot move LEFT");
+			}
 		}
-		default:
-			throw new IllegalMoveException("Unexpected direction: " + direction);
 		}
 
 	}
