@@ -85,11 +85,6 @@ public class PuzzleBoard {
 		return null;
 	}
 
-	/**
-	 * Get the number of the tile, and moves it to the specified direction
-	 * 
-	 * @throws IllegalMoveException if the move is illegal
-	 */
 	public void makeMove(int direction){
 		int tile = 0;
 		Pair p = findCoord(tile);
@@ -128,7 +123,6 @@ public class PuzzleBoard {
 			}
 		}
 		}
-
 	}
 
 	/**

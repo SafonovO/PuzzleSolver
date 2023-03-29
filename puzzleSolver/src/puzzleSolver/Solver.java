@@ -1,6 +1,5 @@
 package puzzleSolver;
 
-import com.sun.tools.javac.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +11,11 @@ public class Solver {
     HashSet<PuzzleBoard> closedList;
     PriorityQueue<PuzzleBoard> openList;
 
+    //TODO Implement A METHOD THAT ENQUEUES POSSIBLE NEW STATES INTO openList and puts current state into closedList
     public static void main(String[] args) {
 
         if (System.console() != null) {
             String currentDir = System.getProperty("user.dir");
-            String fileName = args[0];
             String filePath = currentDir.substring(0, currentDir.lastIndexOf(File.separator, currentDir.lastIndexOf(File.separator))) + File.separator + args[0];
             try {
                 PuzzleBoard tmp = new PuzzleBoard(filePath);
@@ -29,7 +28,6 @@ public class Solver {
             if (args.length < 2) {
                 System.out.println("File names are not specified");
                 System.out.println("usage: java " + MethodHandles.lookup().lookupClass().getName() + " input_file output_file");
-                return;
             }
         }
         else{
@@ -45,7 +43,6 @@ public class Solver {
             if (args.length < 2) {
                 System.out.println("File names are not specified");
                 System.out.println("usage: java " + MethodHandles.lookup().lookupClass().getName() + " input_file output_file");
-                return;
             }
         }
     }
