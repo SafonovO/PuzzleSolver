@@ -19,7 +19,7 @@ public class Solver {
             String filePath = currentDir.substring(0, currentDir.lastIndexOf(File.separator, currentDir.lastIndexOf(File.separator))) + File.separator + args[0];
             try {
                 PuzzleBoard tmp = new PuzzleBoard(filePath);
-                System.out.println("hello world!");
+                System.out.println(args[0]);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -32,7 +32,7 @@ public class Solver {
             try {
                 PuzzleBoard tmp = new PuzzleBoard(System.getProperty("user.dir")+File.separator +"src"+File.separator+ args[0]);
                 tmp.makeMove(0);
-                System.out.println("AMOGUS");
+                System.out.println(args[0]);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -1,7 +1,6 @@
 package puzzleSolver;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
