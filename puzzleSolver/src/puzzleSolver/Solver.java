@@ -22,8 +22,6 @@ public class Solver {
                 System.out.println("hello world!");
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            } catch (BadBoardException e) {
-                throw new RuntimeException(e);
             }
             if (args.length < 2) {
                 System.out.println("File names are not specified");
@@ -36,8 +34,6 @@ public class Solver {
                 tmp.makeMove(0);
                 System.out.println("AMOGUS");
             } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (BadBoardException e) {
                 throw new RuntimeException(e);
             }
             if (args.length < 2) {

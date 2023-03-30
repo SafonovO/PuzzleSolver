@@ -16,32 +16,14 @@ public class PuzzleBoard {
 
 	int board[][];
 
-	private void checkBoard() throws BadBoardException {
-		int[] vals = new int[SIZE * SIZE];
-
-		// check that the board contains all number 0...15
-		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				if (board[i][j]<0 || board[i][j]>=SIZE*SIZE)
-					throw new BadBoardException("found tile " + board[i][j]);
-				vals[board[i][j]] += 1;
-			}
-		}
-
-		for (int i = 0; i < vals.length; i++)
-			if (vals[i] != 1)
-				throw new BadBoardException("tile " + i +
-											" appears " + vals[i] + "");
-
-	}
 
 	/**
 	 * @param fileName
 	 * @throws FileNotFoundException if file not found
-	 * @throws BadBoardException     if the board is incorrectly formatted Reads a
+	     if the board is incorrectly formatted Reads a
 	 *                               board from file and creates the board
 	 */
-	public PuzzleBoard(String fileName) throws IOException, BadBoardException {
+	public PuzzleBoard(String fileName) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
 		this.SIZE = Integer.parseInt(br.readLine());
 		board = new int[SIZE][SIZE];
@@ -53,7 +35,6 @@ public class PuzzleBoard {
 				s = br.read(); // skip the space
 				if (s != ' ' && s != '\n') {
 					br.close();
-					throw new BadBoardException("error in line " + i);
 				}
 				if (c1 == ' ')
 					c1 = '0';
@@ -62,8 +43,6 @@ public class PuzzleBoard {
 				board[i][j] = 10 * (c1 - '0') + (c2 - '0');
 			}
 		}
-		checkBoard();
-
 		br.close();
 	}
 
