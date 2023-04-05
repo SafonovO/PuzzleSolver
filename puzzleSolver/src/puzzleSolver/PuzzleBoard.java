@@ -4,19 +4,20 @@ import java.io.*;
 import java.util.*;
 
 import static puzzleSolver.Solver.closedList;
+import static puzzleSolver.Solver.openList;
 
 public class PuzzleBoard {
 	String path;
 	int height;
-	int cost;
+	double cost;
 
 	private int emptyTileRow;
 	private int emptyTileCol;
-	private int SIZE;
+	public int SIZE;
 
-	int board[][];
+	byte board[][];
 
-	int goalState[][];
+	public static byte goalState[][];
 
 	private void findEmptyTilePosition() {
 		Pair p = findCoord(0);
@@ -29,13 +30,10 @@ public class PuzzleBoard {
 		emptyTileCol=old.emptyTileCol;
 		emptyTileRow=old.emptyTileRow;
 		SIZE =old.SIZE;
-		board = new int[SIZE][SIZE];
+		board = new byte[SIZE][SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < SIZE; j++){
-				board[i][j] = old.board[i][j];
-			}
+			System.arraycopy(old.board[i],0,board[i],0,SIZE);
 		}
-		goalState = old.goalState;
 		height = old.height+1;
 		path = old.path;
 	}
@@ -69,9 +67,41 @@ public class PuzzleBoard {
 	}
 
 	public void getTotalCost() {
-		 this.cost = euclideanDistance()/2 + getManhattanDistance()/5;
+		 this.cost = (euclideanDistance()*0.4 + getManhattanDistance()*0.85) + hammingHeuristic();
 	}
 
+	public int manhattanDistanceFirstRowColumn() {
+		int distance = 0;
+
+		// Calculate distances for first row
+		for (int col = 0; col < SIZE - 1; col++) {
+			if (board[0][col] != col + 1) {
+				distance += Math.abs(col + 1 - board[0][col]);
+			}
+		}
+
+		// Calculate distances for first column
+		for (int row = 1; row < SIZE - 1; row++) {
+			if (board[row][0] != row * SIZE + 1) {
+				distance += Math.abs(row * SIZE + 1 - board[row][0]);
+			}
+		}
+
+		return distance;
+	}
+
+	public int hammingHeuristic() {
+		int h = 0;
+		for (int row = 0; row < SIZE; row++) {
+			for (int col = 0; col < SIZE; col++) {
+				int tile = board[row][col];
+				if (tile != 0 && tile != goalState[row][col]) {
+					h++; // increment heuristic value for each misplaced tile
+				}
+			}
+		}
+		return h;
+	}
 
 	public int getLinearConflict() {
 		int conflict = 0;
@@ -112,8 +142,8 @@ public class PuzzleBoard {
 	public PuzzleBoard(String fileName) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
 		this.SIZE = Integer.parseInt(br.readLine());
-		board = new int[SIZE][SIZE];
-		goalState = new int[SIZE][SIZE];
+		board = new byte[SIZE][SIZE];
+		goalState = new byte[SIZE][SIZE];
 		int c1, c2, s;
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
@@ -127,14 +157,14 @@ public class PuzzleBoard {
 					c1 = '0';
 				if (c2 == ' ')
 					c2 = '0';
-				board[i][j] = 10 * (c1 - '0') + (c2 - '0');
+				board[i][j] = (byte)(10 * (c1 - '0') + (c2 - '0'));
 			}
 		}
 		br.close();
 		int counter =1;
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++){
-				goalState[i][j] = counter++;
+				goalState[i][j] = (byte)counter++;
 			}
 		}
 		findEmptyTilePosition();
@@ -163,9 +193,7 @@ public class PuzzleBoard {
 	}
 
 
-	public List<PuzzleBoard> makeMove(){
-		List<PuzzleBoard> result = new LinkedList<>();
-
+	public void makeMove(){
 		int[][] deltas = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 		String[] directions = { "D", "U", "R", "L" };
 
@@ -182,12 +210,11 @@ public class PuzzleBoard {
 				newBoard.getTotalCost();
 				newBoard.path += board[newBoard.emptyTileRow][newBoard.emptyTileCol] + " " + directions[i] + "\n";
 				if (!closedList.contains(newBoard)) {
-					result.add(newBoard);
+					openList.add(newBoard);
 				}
 			}
 		}
 
-		return result;
 	}
 	public boolean isGoalState() {
 		return Arrays.deepEquals(board, goalState);
@@ -249,7 +276,6 @@ public class PuzzleBoard {
 		}
 		return true;
 	}
-
 }
 
 
