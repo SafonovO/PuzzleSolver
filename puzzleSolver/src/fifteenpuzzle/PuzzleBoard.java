@@ -1,10 +1,10 @@
-package puzzleSolver;
+package fifteenpuzzle;
 
 import java.io.*;
 import java.util.*;
 
-import static puzzleSolver.Solver.closedList;
-import static puzzleSolver.Solver.openList;
+import static fifteenpuzzle.Solver.closedList;
+import static fifteenpuzzle.Solver.openList;
 
 public class PuzzleBoard {
 	String path;

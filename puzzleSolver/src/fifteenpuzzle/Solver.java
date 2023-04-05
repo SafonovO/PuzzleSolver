@@ -1,4 +1,4 @@
-package puzzleSolver;
+package fifteenpuzzle;
 
 
 import java.io.File;
