@@ -25,7 +25,7 @@ public static void step(PuzzleBoard input){
             System.out.println("usage: java " + MethodHandles.lookup().lookupClass().getName() + " input_file output_file");
             return;
         }
-
+        //If the project is launched through the cmd
         if(System.console() != null) {
             try {
                 File myObj = new File(args[1]);
@@ -42,9 +42,6 @@ public static void step(PuzzleBoard input){
                         break;
                     }
                     step(current);
-                    if(i%500000 ==0 && i/500000>0){
-                        System.out.println("500k iterations");
-                    }
                     i++;
                 }
 
@@ -52,29 +49,24 @@ public static void step(PuzzleBoard input){
                 throw new RuntimeException(e);
             }
         }
+        //If the project is launched through an IDE for debugging
         else{
             try {
                 File myObj = new File(args[1]);
                 long start = System.nanoTime();
                 step(new PuzzleBoard(args[0]));
-                int i=0;
                 while(!openList.isEmpty())
                 {
                     PuzzleBoard current = openList.poll();
                     if(current.isGoalState()) {
                         long elapsedTime = (System.nanoTime() - start)/1000000;
-                        System.out.println(current.path);
-                        System.out.println(elapsedTime);
+                        System.out.println(args[0].substring(0,7)+" time in milliseconds: " + elapsedTime);
                         FileWriter myWriter = new FileWriter(myObj.getName());
                         myWriter.write(current.path);
                         myWriter.close();
                         break;
                     }
                     step(current);
-                    if(i%500000 ==0 && i/500000>0){
-                        System.out.println("500k iterations");
-                    }
-                    i++;
                 }
 
             } catch (IOException e) {

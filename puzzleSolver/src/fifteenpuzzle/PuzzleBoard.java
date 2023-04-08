@@ -67,27 +67,12 @@ public class PuzzleBoard {
 	}
 
 	public void getTotalCost() {
-		 this.cost = (euclideanDistance()*0.4 + getManhattanDistance()*0.85) + hammingHeuristic();
-	}
-
-	public int manhattanDistanceFirstRowColumn() {
-		int distance = 0;
-
-		// Calculate distances for first row
-		for (int col = 0; col < SIZE - 1; col++) {
-			if (board[0][col] != col + 1) {
-				distance += Math.abs(col + 1 - board[0][col]);
-			}
+		if(SIZE > 7) {
+			this.cost = (euclideanDistance()*0.4 + getManhattanDistance()*0.85)+ hammingHeuristic();
 		}
-
-		// Calculate distances for first column
-		for (int row = 1; row < SIZE - 1; row++) {
-			if (board[row][0] != row * SIZE + 1) {
-				distance += Math.abs(row * SIZE + 1 - board[row][0]);
-			}
+		 else {
+			this.cost = (euclideanDistance()+hammingHeuristic());
 		}
-
-		return distance;
 	}
 
 	public int hammingHeuristic() {
@@ -96,48 +81,11 @@ public class PuzzleBoard {
 			for (int col = 0; col < SIZE; col++) {
 				int tile = board[row][col];
 				if (tile != 0 && tile != goalState[row][col]) {
-					h++; // increment heuristic value for each misplaced tile
+					h++;
 				}
 			}
 		}
 		return h;
-	}
-
-	public int getLinearConflict() {
-		int conflict = 0;
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				if (board[i][j] != 0 && isTileInRowOrColumn(i, j)) {
-					int goalRow = (board[i][j] - 1) / board.length;
-					int goalCol = (board[i][j] - 1) % board[0].length;
-					if (goalRow == i) {
-						for (int k = j + 1; k < board[0].length; k++) {
-							if (board[i][k] != 0 && isTileInRowOrColumn(i, k) && (board[i][j] > board[i][k])) {
-								conflict += 2;
-							}
-						}
-					} else if (goalCol == j) {
-						for (int k = i + 1; k < board.length; k++) {
-							if (board[k][j] != 0 && isTileInRowOrColumn(k, j) && (board[i][j] > board[k][j])) {
-								conflict += 2;
-							}
-						}
-					}
-				}
-			}
-		}
-		return conflict;
-	}
-	private boolean isTileInRowOrColumn(int row, int col) {
-		for (int i = 0; i < board.length; i++) {
-			if (board[row][i] != 0 && i != col) {
-				return true;
-			}
-			if (board[i][col] != 0 && i != row) {
-				return true;
-			}
-		}
-		return false;
 	}
 	public PuzzleBoard(String fileName) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -219,26 +167,6 @@ public class PuzzleBoard {
 	public boolean isGoalState() {
 		return Arrays.deepEquals(board, goalState);
 	}
-
-	private String num2str(int i) {
-		if (i == 0)
-			return "  ";
-		else if (i < 10)
-			return " " + Integer.toString(i);
-		else
-			return Integer.toString(i);
-	}
-
-	public String toString() {
-		String ans = "";
-		for (int i = 0; i < SIZE; i++) {
-			ans += num2str(board[i][0]);
-			for (int j = 1; j < SIZE; j++)
-				ans += " " + num2str(board[i][j]);
-			ans += "\n";
-		}
-		return ans;
-	}
 	@Override
 	public int hashCode() {
 		int result = 17;
@@ -247,7 +175,7 @@ public class PuzzleBoard {
 				result = 31 * result + board[i][j];
 			}
 		}
-		return result;
+		return result+(int)cost;
 	}
 
 	@Override
@@ -267,13 +195,6 @@ public class PuzzleBoard {
 			return false;
 		}
 
-		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				if (other.board[i][j] != this.board[i][j]) {
-					return false;
-				}
-			}
-		}
 		return true;
 	}
 }
